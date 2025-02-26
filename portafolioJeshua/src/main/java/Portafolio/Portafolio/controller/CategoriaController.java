@@ -1,6 +1,6 @@
-package com.tienda.controller;
+package Portafolio.Portafolio.controller;
 
-import com.tienda.service.CategoriaService;
+import Portafolio.Portafolio.service.CategoriaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
