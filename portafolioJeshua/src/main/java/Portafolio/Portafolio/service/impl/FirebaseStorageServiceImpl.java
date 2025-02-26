@@ -35,7 +35,7 @@ public class FirebaseStorageServiceImpl implements FirebaseStorageService {
             String fileName = "img" + id + "." + extension;
 
             // Se convierte el archivo a un archivo temporal
-            File file = this.convertToFile(archivoLocalCliente);
+            File file = this.converToFile(archivoLocalCliente);
 
             // Se sube el archivo a Firestore y se obtiene el URL de la imagen
             String URL = this.uploadFile(file, carpeta, fileName);
