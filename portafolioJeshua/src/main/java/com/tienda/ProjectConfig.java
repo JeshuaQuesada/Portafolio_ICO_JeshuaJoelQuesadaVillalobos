@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Portafolio.Portafolio;
+package com.tienda;
 
 import java.util.Locale;
 import org.springframework.context.MessageSource;
@@ -17,10 +17,9 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 public class ProjectConfig implements WebMvcConfigurer {
-
     /* Los siguientes métodos son para incorporar el tema de internacionalización en el proyecto */
-
- /* localeResolver se utiliza para crear una sesión de cambio de idioma */
+    
+    /* localeResolver se utiliza para crear una sesión de cambio de idioma*/
     @Bean
     public LocaleResolver localeResolver() {
         var slr = new SessionLocaleResolver();
@@ -30,7 +29,7 @@ public class ProjectConfig implements WebMvcConfigurer {
         return slr;
     }
 
-    /* localeChangeInterceptor se utiliza para crear un interceptor de cambio de idioma */
+    /* localeChangeInterceptor se utiliza para crear un interceptor de cambio de idioma*/
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         var lci = new LocaleChangeInterceptor();
@@ -42,14 +41,13 @@ public class ProjectConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registro) {
         registro.addInterceptor(localeChangeInterceptor());
     }
-//Bean para poder acceder a los Messages.properties en codigo...
 
+    //Bean para poder acceder a los Messages.properties en código...
     @Bean("messageSource")
     public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        ResourceBundleMessageSource messageSource= new ResourceBundleMessageSource();
         messageSource.setBasenames("messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
-
 }
