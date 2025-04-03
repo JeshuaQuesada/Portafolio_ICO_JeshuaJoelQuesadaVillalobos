@@ -22,7 +22,7 @@
         <!-- 2 Fragmento para agregar producto, es la ventana modal -->
         <section th:fragment="agregarProducto">
             <div id="agregarProducto" 
-                 class="modal fade" 
+                 class="modal fade" sec:authorize="hasRole('ROLE_ADMIN')"
                  tabindex="-1" 
                  aria-labelledby="exampleModalLabel" 
                  aria-hidden="true">
@@ -92,7 +92,7 @@
 
         <!-- 3 Sección principal para mostrar la informaccion de la entidad producto -->
         <section th:fragment="listadoProductos" id="productos">
-            <div class="container">
+            <div class="container"sec:authorize="hasRole('ROLE_ADMIN')">
                 <div class="row">
                     <div class="col-md-9">
                         <div class="card">
@@ -150,7 +150,7 @@
 
         <!-- 4 Fragmento que se utiliza en la página modifca.html -->
         <section th:fragment="editarProducto">
-            <div class="row">
+            <div class="row" sec:authorize="hasRole('ROLE_ADMIN')">
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
                     <form method="POST"
@@ -231,7 +231,7 @@
 
         <!-- 5 Fragmento que se utiliza en el fragmento anterior -->
         <section th:fragment="botonesEditar">
-            <div class="container py-4 mb-4 bg-light">
+            <div class="container py-4 mb-4 bg-light" sec:authorize="hasRole('ROLE_ADMIN')">
                 <div class="row">
                     <div class="col-md-4 d-grid">
                         <a th:href="@{/producto/listado}" class="btn btn-primary">
