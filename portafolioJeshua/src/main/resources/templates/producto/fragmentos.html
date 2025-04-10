@@ -1,10 +1,11 @@
   <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
     <body>
         <!-- 1 Sección para crear el boton de agregar... llamará a una ventana modal-->
         <section th:fragment="botonesAgregar" class="py-4 mb-4 bg-light">
-            <div class="container">
+            <div class="container"sec:authorizer="hasRole ('ROLE_ADMIN')">
                 <div class="row">
                     <div class="col-md-3">   
                         <button 
@@ -27,7 +28,7 @@
                  aria-labelledby="exampleModalLabel" 
                  aria-hidden="true">
                 <div class="modal-dialog modal-md">
-                    <div class="modal-content">
+                    <div class="modal-content"sec:authorizer="hasRole ('ROLE_ADMIN')">
                         <div class="modal-header bg-info text-white">
                             <h5 class="modal-title">[[#{producto.agregar}]]</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -92,7 +93,7 @@
 
         <!-- 3 Sección principal para mostrar la informaccion de la entidad producto -->
         <section th:fragment="listadoProductos" id="productos">
-            <div class="container">
+            <div class="container"sec:authorizer="hasRole ('ROLE_ADMIN')">
                 <div class="row">
                     <div class="col-md-9">
                         <div class="card">
@@ -150,7 +151,7 @@
 
         <!-- 4 Fragmento que se utiliza en la página modifca.html -->
         <section th:fragment="editarProducto">
-            <div class="row">
+            <div class="row"sec:authorizer="hasRole ('ROLE_ADMIN')">
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
                     <form method="POST"
@@ -231,7 +232,7 @@
 
         <!-- 5 Fragmento que se utiliza en el fragmento anterior -->
         <section th:fragment="botonesEditar">
-            <div class="container py-4 mb-4 bg-light">
+            <div class="container py-4 mb-4 bg-light"sec:authorizer="hasRole ('ROLE_ADMIN')">
                 <div class="row">
                     <div class="col-md-4 d-grid">
                         <a th:href="@{/producto/listado}" class="btn btn-primary">
