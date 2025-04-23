@@ -4,16 +4,26 @@
  */
 package Portafolio.Portafolio.service.impl;
 
-import Portafolio.Portafolio.dao.*;
-import Portafolio.Portafolio.domain.*;
-import Portafolio.Portafolio.service.*;
-import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
+package com.tienda.service.impl;
+
+import Portafolio.Portafolio.dao.FacturaDao;
+import Portafolio.Portafolio.dao.VentaDao;
+import Portafolio.Portafolio.domain.Usuario;
+import Portafolio.Portafolio.domain.Factura;
+import Portafolio.Portafolio.domain.Item;
+import Portafolio.Portafolio.domain.Venta;
+import Portafolio.Portafolio.service.ItemService;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import Portafolio.Portafolio.dao.ProductoDao;
+import Portafolio.Portafolio.dao.UsuarioDao;
+import Portafolio.Portafolio.domain.Producto;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -43,24 +53,21 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void delete(Item item) {
         List<Item> listaItems = (List) session.getAttribute("listaItems");
-        if (listaItems == null) {
-            listaItems = new ArrayList<>();
-        }
-        var existe = false;
-        for (Item i : listaItems) {
-            if (i.getIdProducto() == item.getIdProducto()) {
-                existe = true;
-                if (i.getCantidad() < i.getExistencias()) {
-                    i.setCantidad(i.getCantidad() + 1);
+        if (listaItems != null) {
+            var posicion = -1;
+            var existe = false;
+            for (var i : listaItems) {
+                posicion++;
+                if (Objects.equals(i.getIdProducto(), item.getIdProducto())) {
+                    existe = true;
+                    break;
                 }
-                break;
+            }
+            if (existe) {
+                listaItems.remove(posicion);
+                session.setAttribute("listaItems", listaItems);
             }
         }
-        if (!existe) {
-            item.setCantidad(1);
-            listaItems.add(item);
-        }
-        session.setAttribute("listaItems", listaItems);
     }
 
     @Override
@@ -70,7 +77,7 @@ public class ItemServiceImpl implements ItemService {
             listaItems = new ArrayList<>();
         }
         var existe = false;
-        for (Item i : listaItems) {
+        for (var i : listaItems) {
             if (i.getIdProducto() == item.getIdProducto()) {
                 existe = true;
                 if (i.getCantidad() < i.getExistencias()) {
@@ -90,7 +97,7 @@ public class ItemServiceImpl implements ItemService {
     public void update(Item item) {
         List<Item> listaItems = (List) session.getAttribute("listaItems");
         if (listaItems != null) {
-            for (Item i : listaItems) {
+            for (var i : listaItems) {
                 if (i.getIdProducto() == item.getIdProducto()) {
                     i.setCantidad(item.getCantidad());
                     session.setAttribute("listaItems", listaItems);
@@ -111,9 +118,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void facturar() {
-        // Se debe recuperar el usuario autenticado y obtener su idUsuario
-        String username;
-        Object principal = SecurityContextHolder
+        //Se debe recuperar el usuario autenticado y obtener su idUsuario
+        String username = "";
+        var principal = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
@@ -121,7 +128,9 @@ public class ItemServiceImpl implements ItemService {
         if (principal instanceof UserDetails userDetails) {
             username = userDetails.getUsername();
         } else {
-            username = principal.toString();
+            if (principal != null) {
+                username = principal.toString();
+            }
         }
 
         if (username.isBlank()) {
@@ -135,41 +144,43 @@ public class ItemServiceImpl implements ItemService {
             return;
         }
 
-// Se debe registrar la factura incluyendo el usuario
+        //Se debe registrar la factura incluyendo el usuario
         Factura factura = new Factura(usuario.getIdUsuario());
         factura = facturaDao.save(factura);
 
-// Se debe registrar las ventas de cada producto -actualizando existencias-
+        //Se debe registrar las ventas de cada producto -actualizando existencias-
         List<Item> listaItems = (List) session.getAttribute("listaItems");
         if (listaItems != null) {
             double total = 0;
             for (Item i : listaItems) {
-                Venta venta = new Venta(factura.getIdFactura(),
-                        i.getIdProducto(),
-                        i.getPrecio(),
-                        i.getCantidad());
-                ventaDao.save(venta);
-                Producto producto = productoDao.getReferenceById(i.getIdProducto());
-                producto.setExistencias(producto.getExistencias() - i.getCantidad());
-                productoDao.save(producto);
-                total += i.getCantidad() * i.getPrecio();
+                    Venta venta = new Venta(factura.getIdFactura(),
+                            i.getIdProducto(),
+                            i.getPrecio(),
+                            i.getCantidad());
+                    ventaDao.save(venta);
+                    Producto producto = productoDao.getReferenceById(i.getIdProducto());
+                    producto.setExistencias(producto.getExistencias()-i.getCantidad());
+                    productoDao.save(producto);
+                    total += i.getCantidad()* i.getPrecio();
             }
-            // Se debe registrar el total de la venta en la factura
+
+            //Se debe registrar el total de la venta en la factura
             factura.setTotal(total);
             facturaDao.save(factura);
-            // Se debe limpiar el carrito la lista...
+
+            //Se debe limpiar el carrito la lista...
             listaItems.clear();
         }
-
     }
 
+    @Override
     public double getTotal() {
-        // Se debe registrar las ventas de cada producto -actualizando existencias-
-        List<Item> listaItems = (List) session.getAttribute("listaItems");
+        //Se debe registrar las ventas de cada producto -actualizando existencias-
+        var listaItems = (List<Item>) session.getAttribute("listaItems");
         double total = 0;
         if (listaItems != null) {
             for (Item i : listaItems) {
-                total += i.getCantidad() * i.getPrecio();
+                total += i.getCantidad()* i.getPrecio();
             }
         }
         return total;

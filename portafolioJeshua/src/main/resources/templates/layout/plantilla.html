@@ -49,7 +49,8 @@
                             </ul>
                             <div id="resultsBlock">
                             </div>
-                            <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+                            <ul class="navbar-nav" 
+                                sec:authorize="isAuthenticated()">
                                 <li class="nav-item text-white my-auto">
                                     <i class="fas fa-user"></i> <span sec:authentication="name">Bob</span>
                                 </li>

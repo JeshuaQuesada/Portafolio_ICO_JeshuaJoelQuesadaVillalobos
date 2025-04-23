@@ -8,14 +8,14 @@ import Portafolio.Portafolio.dao.RolDao;
 import Portafolio.Portafolio.dao.UsuarioDao;
 import Portafolio.Portafolio.domain.Rol;
 import Portafolio.Portafolio.domain.Usuario;
-import Portafolio.Portafolio.service.UsuarioDetailsService;
+import Portafolio.Portafolio.service.UsuarioService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioDetailsService {
+public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private UsuarioDao usuarioDao;
     @Autowired

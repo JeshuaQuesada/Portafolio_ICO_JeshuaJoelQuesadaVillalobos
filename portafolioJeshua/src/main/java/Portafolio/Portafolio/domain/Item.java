@@ -4,8 +4,6 @@
  */
 package Portafolio.Portafolio.domain;
 
-package com.tienda.domain;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

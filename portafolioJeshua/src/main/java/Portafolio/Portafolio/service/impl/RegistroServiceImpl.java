@@ -7,7 +7,7 @@ package Portafolio.Portafolio.service.impl;
 import Portafolio.Portafolio.domain.Usuario;
 import Portafolio.Portafolio.service.CorreoService;
 import Portafolio.Portafolio.service.RegistroService;
-import Portafolio.Portafolio.service.UsuarioDetailsService;
+import Portafolio.Portafolio.service.UsuarioService;
 import jakarta.mail.MessagingException;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class RegistroServiceImpl implements RegistroService {
     @Autowired
     private CorreoService correoService;
     @Autowired
-    private UsuarioDetailsService usuarioService;
+    private UsuarioService usuarioService;
     @Autowired
     private MessageSource messageSource;  //creado en semana 4...
     @Autowired

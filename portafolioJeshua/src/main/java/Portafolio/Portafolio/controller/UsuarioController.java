@@ -1,11 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Portafolio.Portafolio.controller;
 
 import Portafolio.Portafolio.domain.Usuario;
-import Portafolio.Portafolio.service.UsuarioDetailsService;
+import Portafolio.Portafolio.service.UsuarioService;
 import Portafolio.Portafolio.service.FirebaseStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioDetailsService usuarioService;
+    private UsuarioService usuarioService;
 
     @GetMapping("/listado")
     public String listado(Model model) {

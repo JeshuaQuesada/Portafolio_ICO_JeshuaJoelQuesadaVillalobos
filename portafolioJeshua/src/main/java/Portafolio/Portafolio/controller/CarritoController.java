@@ -42,7 +42,6 @@ public class CarritoController {
             Producto producto = productoService.getProducto(item);
             item = new Item(producto);
         }
-        item = item2;
         itemService.save(item2);
         var lista = itemService.gets();
         var totalCarritos = 0;

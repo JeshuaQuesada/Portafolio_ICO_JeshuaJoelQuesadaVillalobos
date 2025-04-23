@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Factura")
+@Table(name = "factura")
 public class Factura implements Serializable {
 
     private static final long serialVersionUID = 1L;
